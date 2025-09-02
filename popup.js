@@ -254,13 +254,14 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function showAnimatedResponse(answer) {
-    responseContent.innerHTML = `<div class="response-content text-reveal">${answer}</div>`;
+    // Create empty response container to prevent text flash
+    responseContent.innerHTML = '<div class="response-content text-reveal"></div>';
     responseContent.classList.add('fade-in-up');
     
-    // Add character-by-character animation
+    // Add character-by-character animation immediately
     setTimeout(() => {
       animateTextCharacterByCharacter(answer);
-    }, 800);
+    }, 300); // Reduced delay for smoother experience
     
     setTimeout(() => {
       responseContent.classList.remove('fade-in-up');
