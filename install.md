@@ -47,10 +47,15 @@
 
 Each mode automatically uses optimized settings:
 
-| Mode | Temperature | Max Tokens | Use Case |
-|------|-------------|------------|----------|
-| **Screen** | 0.3 | 1,500 | Accurate analysis |
-| **General** | 0.7 | 2,000 | Creative responses |
+| Mode | Temperature | Max Output | Max Input | Use Case |
+|------|-------------|------------|-----------|----------|
+| **Screen** | 0.3 | 1,500 | 4,000 | Accurate analysis |
+| **General** | 0.7 | 2,000 | 8,000 | Creative responses |
+
+**Token Limits Explained:**
+- **Max Output**: How long AI responses can be
+- **Max Input**: How much you can ask + images (screen mode)
+- **Cost Control**: Input limits help manage API costs
 
 ## 🔧 Troubleshooting
 
@@ -67,4 +72,4 @@ Each mode automatically uses optimized settings:
 
 ---
 
-**Version 1.12** - Mode-specific configurations and enhanced UI
+**Version 1.13** - Mode-specific configurations and enhanced UI

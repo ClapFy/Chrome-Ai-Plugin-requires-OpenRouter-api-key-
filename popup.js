@@ -16,10 +16,14 @@ document.addEventListener('DOMContentLoaded', function() {
   const screenModel = document.getElementById('screenModel');
   const screenTemp = document.getElementById('screenTemp');
   const screenTokens = document.getElementById('screenTokens');
+  const screenOutputTokens = document.getElementById('screenOutputTokens');
+  const screenInputTokens = document.getElementById('screenInputTokens');
   const screenDescription = document.getElementById('screenDescription');
   const generalModel = document.getElementById('generalModel');
   const generalTemp = document.getElementById('generalTemp');
   const generalTokens = document.getElementById('generalTokens');
+  const generalOutputTokens = document.getElementById('generalOutputTokens');
+  const generalInputTokens = document.getElementById('generalInputTokens');
   const generalDescription = document.getElementById('generalDescription');
 
   // Add animation classes to elements on load
@@ -76,12 +80,16 @@ document.addEventListener('DOMContentLoaded', function() {
         screenModel.textContent = config.MODES.screen.model;
         screenTemp.textContent = config.MODES.screen.temperature;
         screenTokens.textContent = config.MODES.screen.maxTokens.toLocaleString();
+        screenOutputTokens.textContent = config.MODES.screen.maxOutputTokens.toLocaleString();
+        screenInputTokens.textContent = config.MODES.screen.maxInputTokens.toLocaleString();
         screenDescription.textContent = config.MODES.screen.description;
 
         // Display general mode config
         generalModel.textContent = config.MODES.general.model;
         generalTemp.textContent = config.MODES.general.temperature;
         generalTokens.textContent = config.MODES.general.maxTokens.toLocaleString();
+        generalOutputTokens.textContent = config.MODES.general.maxOutputTokens.toLocaleString();
+        generalInputTokens.textContent = config.MODES.general.maxInputTokens.toLocaleString();
         generalDescription.textContent = config.MODES.general.description;
       }
     });

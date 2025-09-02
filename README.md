@@ -90,6 +90,13 @@ Each mode comes with pre-optimized settings:
 
 ## 📝 Changelog
 
+### Version 1.13 - Input/Output Token Configuration
+- **New Feature**: Configurable max input and output token limits per mode
+- **Screen Mode**: 4,000 input tokens (image + text), 1,500 output tokens
+- **General Mode**: 8,000 input tokens (text only), 2,000 output tokens
+- **Cost Control**: Better management of API usage and costs
+- **Enhanced UI**: Configuration display shows all token limits clearly
+
 ### Version 1.12 - Mode-Specific Configurations
 - **New Feature**: Separate system configurations for each mode
 - **Screen Mode**: Optimized for accuracy (temp: 0.3, tokens: 1,500)

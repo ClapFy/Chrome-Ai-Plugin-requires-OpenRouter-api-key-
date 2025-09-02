@@ -144,7 +144,7 @@ Please provide a clear, helpful, and accurate answer to their question. Be infor
               content: prompt
             }
           ],
-          max_tokens: modeConfig.maxTokens,
+          max_tokens: modeConfig.maxOutputTokens,
           temperature: modeConfig.temperature
         })
       });
