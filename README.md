@@ -94,6 +94,7 @@ Each mode comes with pre-optimized settings:
 - **New Feature**: Configurable max input and output token limits per mode
 - **Screen Mode**: 4,000 input tokens (image + text), 1,500 output tokens
 - **General Mode**: 8,000 input tokens (text only), 2,000 output tokens
+- **System Controlled**: Token limits are hardcoded in config.js, not user-editable
 - **Cost Control**: Better management of API usage and costs
 - **Enhanced UI**: Configuration display shows all token limits clearly
 

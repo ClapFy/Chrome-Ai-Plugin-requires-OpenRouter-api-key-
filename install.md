@@ -55,6 +55,7 @@ Each mode automatically uses optimized settings:
 **Token Limits Explained:**
 - **Max Output**: How long AI responses can be
 - **Max Input**: How much you can ask + images (screen mode)
+- **System Controlled**: Limits are hardcoded for optimal performance
 - **Cost Control**: Input limits help manage API costs
 
 ## 🔧 Troubleshooting
