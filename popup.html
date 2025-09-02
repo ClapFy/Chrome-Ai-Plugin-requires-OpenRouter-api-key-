@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>AI Screen Assistant</title>
+  <style>
+    body {
+      width: 400px;
+      min-height: 500px;
+      margin: 0;
+      padding: 20px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 600;
+    }
+    
+    .header p {
+      margin: 5px 0 0 0;
+      opacity: 0.9;
+      font-size: 14px;
+    }
+    
+    .api-key-section {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+    
+    .api-key-section label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+    
+    .api-key-section input {
+      width: 100%;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      box-sizing: border-box;
+    }
+    
+    .api-key-section .note {
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 8px;
+      font-style: italic;
+    }
+    
+    .token-usage-section {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    .token-usage-section h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .token-bar {
+      width: 100%;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    
+    .token-progress {
+      height: 100%;
+      background: linear-gradient(90deg, #4CAF50, #45a049);
+      transition: width 0.3s ease;
+      border-radius: 10px;
+    }
+    
+    .token-info {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .token-warning {
+      color: #ff9800;
+      font-weight: 500;
+    }
+    
+    .token-danger {
+      color: #f44336;
+      font-weight: 500;
+    }
+    
+    .mode-toggle {
+      display: flex;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+    
+    .mode-toggle button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: transparent;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 500;
+    }
+    
+    .mode-toggle button.active {
+      background: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .question-section {
+      margin-bottom: 20px;
+    }
+    
+    .question-section textarea {
+      width: 100%;
+      height: 80px;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.9);
+      color: #333;
+      resize: vertical;
+      box-sizing: border-box;
+      font-family: inherit;
+    }
+    
+    .question-section textarea:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+    }
+    
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .btn {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 14px;
+    }
+    
+    .btn-primary {
+      background: #4CAF50;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: #45a049;
+      transform: translateY(-1px);
+    }
+    
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-1px);
+    }
+    
+    .btn-small {
+      padding: 8px 12px;
+      font-size: 12px;
+    }
+    
+    .response-section {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      border-radius: 8px;
+      min-height: 100px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    
+    .response-section h3 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    
+    .response-content {
+      line-height: 1.5;
+      font-size: 14px;
+    }
+    
+    .loading {
+      text-align: center;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    .error {
+      color: #ff6b6b;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    
+    .success {
+      color: #4CAF50;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .mode-info {
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+    
+    .token-used {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>🤖 AI Screen Assistant</h1>
+    <p>Ask questions about your screen or get general AI help</p>
+  </div>
+  
+  <div class="api-key-section">
+    <label for="apiKey">OpenRouter API Key:</label>
+    <input type="password" id="apiKey" placeholder="Enter your OpenRouter API key">
+    <div class="note">Get your API key from <a href="https://openrouter.ai/" target="_blank" style="color: #fff;">openrouter.ai</a></div>
+    <div class="success" id="apiKeyStatus" style="display: none;">API key saved successfully!</div>
+  </div>
+  
+  <div class="token-usage-section">
+    <h3>Token Usage</h3>
+    <div class="token-bar">
+      <div class="token-progress" id="tokenProgress"></div>
+    </div>
+    <div class="token-info" id="tokenInfo">Loading...</div>
+    <button class="btn btn-small btn-secondary" id="resetTokens" style="margin-top: 10px;">Reset Usage</button>
+  </div>
+  
+  <div class="mode-toggle">
+    <button id="screenMode" class="active">📸 Screen Questions</button>
+    <button id="generalMode">🤔 General AI</button>
+  </div>
+  
+  <div id="screenModeContent">
+    <div class="mode-info">Ask questions about what's visible on your screen</div>
+    <div class="question-section">
+      <label for="screenQuestion">Ask about your screen:</label>
+      <textarea id="screenQuestion" placeholder="e.g., What is this webpage about? What can I see in this image?"></textarea>
+    </div>
+    
+    <div class="button-group">
+      <button class="btn btn-secondary" id="captureScreen">📸 Capture Screen</button>
+      <button class="btn btn-primary" id="askScreenQuestion">🤔 Ask AI</button>
+    </div>
+  </div>
+  
+  <div id="generalModeContent" class="hidden">
+    <div class="mode-info">Ask any question to get AI assistance</div>
+    <div class="question-section">
+      <label for="generalQuestion">Ask anything:</label>
+      <textarea id="generalQuestion" placeholder="e.g., How do I learn Python? What's the weather like? Explain quantum computing"></textarea>
+    </div>
+    
+    <div class="button-group">
+      <button class="btn btn-primary" id="askGeneralQuestion">🤔 Ask AI</button>
+    </div>
+  </div>
+  
+  <div class="response-section">
+    <h3>AI Response:</h3>
+    <div id="responseContent" class="response-content">
+      Enter your API key and ask a question to get started!
+    </div>
+    <div class="token-used" id="tokenUsed" style="display: none;"></div>
+  </div>
+  
+  <div class="footer">
+    <p>AI Screen Assistant v1.8 • Powered by OpenRouter</p>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
