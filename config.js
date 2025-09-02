@@ -2,7 +2,7 @@
 const CONFIG = {
   // Extension metadata
   EXTENSION_NAME: 'AI Screen Assistant',
-  EXTENSION_VERSION: '1.8',
+  EXTENSION_VERSION: '1.9',
   
   // OpenRouter API configuration
   OPENROUTER_API_URL: 'https://openrouter.ai/api/v1/chat/completions',

@@ -5,9 +5,9 @@ A powerful Chrome extension that uses AI to answer questions about your screen c
 ## Features
 
 - 🎨 **Modern macOS Design**: Beautiful, clean interface with glassmorphism effects and smooth animations
-- 📸 **Screen Capture**: Capture your current screen using Chrome's native screenshot API
+- 📸 **Automatic Screen Capture**: Screenshots are automatically taken when asking screen questions
 - 🤖 **Dual AI Modes**: 
-  - **Screen Questions**: Ask about what's visible on your screen
+  - **Screen Questions**: Ask about what's visible on your screen (auto-captures)
   - **General AI**: Ask any question for AI assistance
 - 💾 **Secure Storage**: Safely store API keys in Chrome's secure storage
 - 🔒 **Privacy Focused**: Screenshots are processed locally and only sent to AI when needed

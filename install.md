@@ -40,9 +40,8 @@ A beautiful, modern Chrome extension that uses AI to answer questions about your
 
 ### Screen Questions Mode
 1. **Switch to Screen Questions** mode (default)
-2. **Capture your screen** by clicking "📸 Capture Screen"
-3. **Ask a question** about what's visible on screen
-4. **Get AI response** by clicking "🤔 Ask AI"
+2. **Type your question** about what's visible on screen
+3. **Click "🤔 Ask AI"** - the extension automatically captures your screen and analyzes it
 
 ### General AI Mode
 1. **Switch to General AI** mode using the toggle

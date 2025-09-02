@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', function() {
   const generalModeContent = document.getElementById('generalModeContent');
   const screenQuestionTextarea = document.getElementById('screenQuestion');
   const generalQuestionTextarea = document.getElementById('generalQuestion');
-  const captureScreenBtn = document.getElementById('captureScreen');
   const askScreenQuestionBtn = document.getElementById('askScreenQuestion');
   const askGeneralQuestionBtn = document.getElementById('askGeneralQuestion');
   const responseContent = document.getElementById('responseContent');
@@ -68,20 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
     responseContent.innerHTML = 'Enter your API key and ask any question!';
   });
 
-  // Capture screen button
-  captureScreenBtn.addEventListener('click', function() {
-    responseContent.innerHTML = '<div class="loading">Capturing screen...</div>';
-    
-    chrome.runtime.sendMessage({ action: 'captureScreen' }, function(response) {
-      if (response.success) {
-        responseContent.innerHTML = '<div class="success">Screen captured successfully! Now ask a question about it.</div>';
-      } else {
-        responseContent.innerHTML = '<div class="error">Failed to capture screen: ' + response.error + '</div>';
-      }
-    });
-  });
-
-  // Ask screen question button
+  // Ask screen question button - automatically captures screen first
   askScreenQuestionBtn.addEventListener('click', function() {
     const question = screenQuestionTextarea.value.trim();
     const apiKey = apiKeyInput.value.trim();
@@ -96,18 +82,28 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    responseContent.innerHTML = '<div class="loading">🤔 Analyzing your screen...</div>';
+    responseContent.innerHTML = '<div class="loading">📸 Capturing screen...</div>';
     
-    chrome.runtime.sendMessage({
-      action: 'askAI',
-      question: question,
-      apiKey: apiKey,
-      mode: 'screen'
-    }, function(response) {
-      if (response.success) {
-        responseContent.innerHTML = '<div class="response-content">' + response.answer + '</div>';
+    // First capture the screen, then ask the AI
+    chrome.runtime.sendMessage({ action: 'captureScreen' }, function(captureResponse) {
+      if (captureResponse.success) {
+        responseContent.innerHTML = '<div class="loading">🤔 Analyzing your screen...</div>';
+        
+        // Now ask the AI with the captured screenshot
+        chrome.runtime.sendMessage({
+          action: 'askAI',
+          question: question,
+          apiKey: apiKey,
+          mode: 'screen'
+        }, function(aiResponse) {
+          if (aiResponse.success) {
+            responseContent.innerHTML = '<div class="response-content">' + aiResponse.answer + '</div>';
+          } else {
+            responseContent.innerHTML = '<div class="error">Error: ' + aiResponse.error + '</div>';
+          }
+        });
       } else {
-        responseContent.innerHTML = '<div class="error">Error: ' + response.error + '</div>';
+        responseContent.innerHTML = '<div class="error">Failed to capture screen: ' + captureResponse.error + '</div>';
       }
     });
   });
