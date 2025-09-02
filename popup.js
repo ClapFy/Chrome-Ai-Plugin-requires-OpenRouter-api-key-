@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const askGeneralQuestionBtn = document.getElementById('askGeneralQuestion');
   const responseContent = document.getElementById('responseContent');
 
+  // Add animation classes to elements on load
+  addInitialAnimations();
+
   // Load saved API keys
   chrome.storage.sync.get(['openRouterApiKey'], function(result) {
     if (result.openRouterApiKey) {
@@ -38,6 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
       chrome.storage.sync.set({ openRouterApiKey: apiKey }, function() {
         // Update both inputs
         apiKeyInput.value = apiKey;
+        generalApiKeyInput.value = apiKey;
         showApiKeyStatus();
       });
     }
@@ -45,26 +49,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function showApiKeyStatus() {
     apiKeyStatus.classList.remove('hidden');
+    apiKeyStatus.classList.add('success-pulse');
     setTimeout(() => {
       apiKeyStatus.classList.add('hidden');
+      apiKeyStatus.classList.remove('success-pulse');
     }, 2000);
   }
 
-  // Mode switching
+  // Mode switching with animations
   screenModeBtn.addEventListener('click', function() {
     screenModeBtn.classList.add('active');
     generalModeBtn.classList.remove('active');
-    screenModeContent.classList.add('active');
-    generalModeContent.classList.remove('active');
-    responseContent.innerHTML = 'Enter your API key and ask a question about your screen!';
+    
+    // Animate content transition
+    generalModeContent.classList.add('slide-out-right');
+    setTimeout(() => {
+      generalModeContent.classList.remove('active', 'slide-out-right');
+      screenModeContent.classList.add('active', 'slide-in-left');
+      setTimeout(() => {
+        screenModeContent.classList.remove('slide-in-left');
+      }, 600);
+    }, 300);
+    
+    animateTextChange(responseContent, 'Enter your API key and ask a question about your screen!');
   });
 
   generalModeBtn.addEventListener('click', function() {
     generalModeBtn.classList.add('active');
     screenModeBtn.classList.remove('active');
-    generalModeContent.classList.add('active');
-    screenModeContent.classList.remove('active');
-    responseContent.innerHTML = 'Enter your API key and ask any question!';
+    
+    // Animate content transition
+    screenModeContent.classList.add('slide-out-left');
+    setTimeout(() => {
+      screenModeContent.classList.remove('active', 'slide-out-left');
+      generalModeContent.classList.add('active', 'slide-in-right');
+      setTimeout(() => {
+        generalModeContent.classList.remove('slide-in-right');
+      }, 600);
+    }, 300);
+    
+    animateTextChange(responseContent, 'Enter your API key and ask any question!');
   });
 
   // Ask screen question button - automatically captures screen first
@@ -73,21 +97,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const apiKey = apiKeyInput.value.trim();
     
     if (!question) {
-      responseContent.innerHTML = '<div class="error">Please enter a question first.</div>';
+      showAnimatedError('Please enter a question first.');
       return;
     }
     
     if (!apiKey) {
-      responseContent.innerHTML = '<div class="error">Please enter your OpenRouter API key first.</div>';
+      showAnimatedError('Please enter your OpenRouter API key first.');
       return;
     }
 
-    responseContent.innerHTML = '<div class="loading">📸 Capturing screen...</div>';
+    showAnimatedLoading('📸 Capturing screen...');
     
     // First capture the screen, then ask the AI
     chrome.runtime.sendMessage({ action: 'captureScreen' }, function(captureResponse) {
       if (captureResponse.success) {
-        responseContent.innerHTML = '<div class="loading">🤔 Analyzing your screen...</div>';
+        showAnimatedLoading('🤔 Analyzing your screen...');
         
         // Now ask the AI with the captured screenshot
         chrome.runtime.sendMessage({
@@ -97,13 +121,13 @@ document.addEventListener('DOMContentLoaded', function() {
           mode: 'screen'
         }, function(aiResponse) {
           if (aiResponse.success) {
-            responseContent.innerHTML = '<div class="response-content">' + aiResponse.answer + '</div>';
+            showAnimatedResponse(aiResponse.answer);
           } else {
-            responseContent.innerHTML = '<div class="error">Error: ' + aiResponse.error + '</div>';
+            showAnimatedError('Error: ' + aiResponse.error);
           }
         });
       } else {
-        responseContent.innerHTML = '<div class="error">Failed to capture screen: ' + captureResponse.error + '</div>';
+        showAnimatedError('Failed to capture screen: ' + captureResponse.error);
       }
     });
   });
@@ -114,16 +138,16 @@ document.addEventListener('DOMContentLoaded', function() {
     const apiKey = generalApiKeyInput.value.trim();
     
     if (!question) {
-      responseContent.innerHTML = '<div class="error">Please enter a question first.</div>';
+      showAnimatedError('Please enter a question first.');
       return;
     }
     
     if (!apiKey) {
-      responseContent.innerHTML = '<div class="error">Please enter your OpenRouter API key first.</div>';
+      showAnimatedError('Please enter your OpenRouter API key first.');
       return;
     }
 
-    responseContent.innerHTML = '<div class="loading">🤔 Thinking...</div>';
+    showAnimatedLoading('🤔 Thinking...');
     
     chrome.runtime.sendMessage({
       action: 'askAI',
@@ -132,9 +156,9 @@ document.addEventListener('DOMContentLoaded', function() {
       mode: 'general'
     }, function(response) {
       if (response.success) {
-        responseContent.innerHTML = '<div class="response-content">' + response.answer + '</div>';
+        showAnimatedResponse(response.answer);
       } else {
-        responseContent.innerHTML = '<div class="error">Error: ' + response.error + '</div>';
+        showAnimatedError('Error: ' + response.error);
       }
     });
   });
@@ -151,4 +175,87 @@ document.addEventListener('DOMContentLoaded', function() {
       askGeneralQuestionBtn.click();
     }
   });
+
+  // Animation functions
+  function addInitialAnimations() {
+    // Add staggered animations to sections
+    const sections = document.querySelectorAll('.section');
+    sections.forEach((section, index) => {
+      section.style.animationDelay = `${index * 0.1}s`;
+      section.classList.add('fade-in-up');
+    });
+
+    // Add animation to header elements
+    const headerElements = document.querySelectorAll('.header > *');
+    headerElements.forEach((element, index) => {
+      element.style.animationDelay = `${index * 0.2}s`;
+      element.classList.add('scale-in');
+    });
+
+    // Add animation to mode toggle
+    const modeToggle = document.querySelector('.mode-toggle');
+    modeToggle.classList.add('bounce-in');
+  }
+
+  function showAnimatedLoading(message) {
+    responseContent.innerHTML = `<div class="loading loading-dots">${message}</div>`;
+    responseContent.classList.add('fade-in-up');
+    setTimeout(() => {
+      responseContent.classList.remove('fade-in-up');
+    }, 800);
+  }
+
+  function showAnimatedError(message) {
+    responseContent.innerHTML = `<div class="error error-shake">${message}</div>`;
+    responseContent.classList.add('fade-in-up');
+    setTimeout(() => {
+      responseContent.classList.remove('fade-in-up');
+    }, 800);
+  }
+
+  function showAnimatedResponse(answer) {
+    responseContent.innerHTML = `<div class="response-content text-reveal">${answer}</div>`;
+    responseContent.classList.add('fade-in-up');
+    
+    // Add character-by-character animation
+    setTimeout(() => {
+      animateTextCharacterByCharacter(answer);
+    }, 800);
+    
+    setTimeout(() => {
+      responseContent.classList.remove('fade-in-up');
+    }, 800);
+  }
+
+  function animateTextChange(element, newText) {
+    element.classList.add('fade-out');
+    setTimeout(() => {
+      element.innerHTML = newText;
+      element.classList.remove('fade-out');
+      element.classList.add('fade-in-up');
+      setTimeout(() => {
+        element.classList.remove('fade-in-up');
+      }, 800);
+    }, 300);
+  }
+
+  function animateTextCharacterByCharacter(text) {
+    const responseDiv = responseContent.querySelector('.response-content');
+    if (!responseDiv) return;
+    
+    responseDiv.innerHTML = '';
+    const words = text.split(' ');
+    
+    words.forEach((word, wordIndex) => {
+      const wordSpan = document.createElement('span');
+      wordSpan.style.marginRight = '4px';
+      
+      setTimeout(() => {
+        wordSpan.classList.add('char-animation');
+        wordSpan.style.animationDelay = `${wordIndex * 0.1}s`;
+        wordSpan.textContent = word + ' ';
+        responseDiv.appendChild(wordSpan);
+      }, wordIndex * 100);
+    });
+  }
 });
