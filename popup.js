@@ -12,6 +12,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const askGeneralQuestionBtn = document.getElementById('askGeneralQuestion');
   const responseContent = document.getElementById('responseContent');
 
+  // Configuration display elements
+  const screenModel = document.getElementById('screenModel');
+  const screenTemp = document.getElementById('screenTemp');
+  const screenTokens = document.getElementById('screenTokens');
+  const screenDescription = document.getElementById('screenDescription');
+  const generalModel = document.getElementById('generalModel');
+  const generalTemp = document.getElementById('generalTemp');
+  const generalTokens = document.getElementById('generalTokens');
+  const generalDescription = document.getElementById('generalDescription');
+
   // Add animation classes to elements on load
   addInitialAnimations();
 
@@ -22,6 +32,9 @@ document.addEventListener('DOMContentLoaded', function() {
       generalApiKeyInput.value = result.openRouterApiKey;
     }
   });
+
+  // Load and display mode configurations
+  loadModeConfigurations();
 
   // Save API key when changed (both inputs)
   apiKeyInput.addEventListener('blur', function() {
@@ -40,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (apiKey) {
       chrome.storage.sync.set({ openRouterApiKey: apiKey }, function() {
         // Update both inputs
-        apiKeyInput.value = apiKey;
         generalApiKeyInput.value = apiKey;
         showApiKeyStatus();
       });
@@ -54,6 +66,25 @@ document.addEventListener('DOMContentLoaded', function() {
       apiKeyStatus.classList.add('hidden');
       apiKeyStatus.classList.remove('success-pulse');
     }, 2000);
+  }
+
+  function loadModeConfigurations() {
+    // Load config from background script
+    chrome.runtime.sendMessage({ action: 'getConfig' }, function(config) {
+      if (config && config.MODES) {
+        // Display screen mode config
+        screenModel.textContent = config.MODES.screen.model;
+        screenTemp.textContent = config.MODES.screen.temperature;
+        screenTokens.textContent = config.MODES.screen.maxTokens.toLocaleString();
+        screenDescription.textContent = config.MODES.screen.description;
+
+        // Display general mode config
+        generalModel.textContent = config.MODES.general.model;
+        generalTemp.textContent = config.MODES.general.temperature;
+        generalTokens.textContent = config.MODES.general.maxTokens.toLocaleString();
+        generalDescription.textContent = config.MODES.general.description;
+      }
+    });
   }
 
   // Mode switching with animations
@@ -113,7 +144,7 @@ document.addEventListener('DOMContentLoaded', function() {
       if (captureResponse.success) {
         showAnimatedLoading('🤔 Analyzing your screen...');
         
-        // Now ask the AI with the captured screenshot
+        // Now ask the AI with the captured screenshot using screen mode config
         chrome.runtime.sendMessage({
           action: 'askAI',
           question: question,
@@ -149,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     showAnimatedLoading('🤔 Thinking...');
     
+    // Ask AI using general mode config
     chrome.runtime.sendMessage({
       action: 'askAI',
       question: question,

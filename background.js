@@ -11,6 +11,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   } else if (request.action === 'askAI') {
     askAI(request.question, request.apiKey, request.mode).then(sendResponse);
     return true; // Keep message channel open for async response
+  } else if (request.action === 'getConfig') {
+    // Return the current configuration
+    sendResponse(CONFIG);
+    return false;
   }
 });
 
@@ -54,6 +58,9 @@ async function askAI(question, apiKey, mode = 'screen') {
 
     const keyToUse = apiKey.trim();
 
+    // Get mode-specific configuration
+    const modeConfig = CONFIG.MODES[mode] || CONFIG.MODES.screen;
+    
     if (mode === 'screen') {
       // Screen mode requires a screenshot
       if (!currentScreenshot) {
@@ -67,7 +74,7 @@ Please analyze the screenshot and provide a helpful, accurate answer. If you can
 
 Be concise but thorough in your response.`;
 
-      // Call OpenRouter API with image
+      // Call OpenRouter API with image using mode-specific settings
       const response = await fetch(CONFIG.OPENROUTER_API_URL, {
         method: 'POST',
         headers: {
@@ -77,7 +84,7 @@ Be concise but thorough in your response.`;
           'X-Title': CONFIG.EXTENSION_NAME
         },
         body: JSON.stringify({
-          model: CONFIG.AI_MODEL,
+          model: modeConfig.model,
           messages: [
             {
               role: 'user',
@@ -96,8 +103,8 @@ Be concise but thorough in your response.`;
               ]
             }
           ],
-          max_tokens: CONFIG.MAX_TOKENS_PER_RESPONSE,
-          temperature: CONFIG.TEMPERATURE
+          max_tokens: modeConfig.maxTokens,
+          temperature: modeConfig.temperature
         })
       });
 
@@ -120,7 +127,7 @@ Be concise but thorough in your response.`;
 
 Please provide a clear, helpful, and accurate answer to their question. Be informative and engaging in your response.`;
 
-      // Call OpenRouter API without image
+      // Call OpenRouter API without image using mode-specific settings
       const response = await fetch(CONFIG.OPENROUTER_API_URL, {
         method: 'POST',
         headers: {
@@ -130,15 +137,15 @@ Please provide a clear, helpful, and accurate answer to their question. Be infor
           'X-Title': CONFIG.EXTENSION_NAME
         },
         body: JSON.stringify({
-          model: CONFIG.AI_MODEL,
+          model: modeConfig.model,
           messages: [
             {
               role: 'user',
               content: prompt
             }
           ],
-          max_tokens: CONFIG.MAX_TOKENS_PER_RESPONSE,
-          temperature: CONFIG.TEMPERATURE
+          max_tokens: modeConfig.maxTokens,
+          temperature: modeConfig.temperature
         })
       });
 

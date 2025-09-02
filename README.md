@@ -1,291 +1,146 @@
-# AI Screen Assistant - Chrome Extension
+# AI Screen Assistant
 
-A powerful Chrome extension that uses AI to answer questions about your screen content OR provide general AI assistance. The extension can capture screenshots and use the OpenRouter API to provide intelligent responses about what's visible on your screen, or answer any general questions you have.
+A powerful Chrome extension that combines AI capabilities with screen analysis, allowing you to ask questions about your screen content or get general AI assistance.
 
-## Features
+## ✨ Features
 
-- 🎨 **Modern macOS Design**: Beautiful, clean interface with glassmorphism effects and smooth animations
-- 📸 **Automatic Screen Capture**: Screenshots are automatically taken when asking screen questions
-- 🤖 **Dual AI Modes**: 
-  - **Screen Questions**: Ask about what's visible on your screen (auto-captures)
-  - **General AI**: Ask any question for AI assistance
-- 💾 **Secure Storage**: Safely store API keys in Chrome's secure storage
-- 🔒 **Privacy Focused**: Screenshots are processed locally and only sent to AI when needed
-- 🔄 **Mode Switching**: Easy toggle between screen analysis and general AI chat with smooth transitions
-- 🔑 **Personal API Keys**: Users provide their own OpenRouter API keys
-- ✨ **Enhanced UX**: Hover effects, smooth animations, and intuitive visual feedback
+- **🔍 Screen Analysis**: Ask questions about what's on your screen with automatic screenshot capture
+- **🤖 General AI**: Get AI assistance for any question, not just screen-related
+- **🎯 Mode-Specific Configurations**: Each mode has optimized settings for different use cases
+- **🌡️ Smart Temperature Control**: Lower temperature (0.3) for screen analysis, higher (0.7) for creative responses
+- **📊 Token Optimization**: Different max token limits per mode for cost efficiency
+- **🎨 Modern macOS Design**: Beautiful, intuitive interface with smooth animations
+- **⚡ Automatic Screenshots**: No need to manually capture - screenshots are taken automatically
+- **🔐 Secure API Key Storage**: Your API keys are stored securely in Chrome's sync storage
 
-## Prerequisites
+## 🚀 How It Works
+
+### Screen Questions Mode
+- **Optimized for accuracy**: Lower temperature (0.3) ensures precise screen analysis
+- **Higher token limit**: 1,500 tokens for detailed screen descriptions
+- **Automatic capture**: Screenshots are taken automatically when asking questions
+- **Perfect for**: Understanding complex interfaces, reading text, analyzing layouts
+
+### General AI Mode
+- **Balanced creativity**: Temperature (0.7) for varied, engaging responses
+- **Extended responses**: 2,000 tokens for comprehensive answers
+- **No screenshot needed**: Pure text-based AI assistance
+- **Perfect for**: Writing help, explanations, brainstorming, general questions
+
+## 📋 Requirements
 
 - Google Chrome browser
-- OpenRouter API key (get one at [https://openrouter.ai/](https://openrouter.ai/))
+- OpenRouter API key (get one at [openrouter.ai](https://openrouter.ai))
+- Active internet connection
 
-## Installation
+## 🛠️ Installation
 
-### Method 1: Load Unpacked Extension (Recommended for Development)
+1. **Download the extension**:
+   - Clone this repository or download the ZIP file
+   - Extract to a folder on your computer
 
-1. Download or clone this repository to your local machine
-2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable "Developer mode" (toggle in top right)
-4. Click "Load unpacked" and select the folder containing this extension
-5. The extension should now appear in your extensions list
+2. **Load in Chrome**:
+   - Open Chrome and go to `chrome://extensions/`
+   - Enable "Developer mode" (toggle in top right)
+   - Click "Load unpacked" and select the extension folder
 
-### Method 2: Pack Extension (For Distribution)
+3. **Get your API key**:
+   - Visit [openrouter.ai](https://openrouter.ai)
+   - Sign up and get your API key
+   - Copy the key to your clipboard
 
-1. Follow steps 1-4 from Method 1
-2. Click "Pack extension" button
-3. Choose the extension directory
-4. Chrome will create a `.crx` file and `.pem` key file
-5. The `.crx` file can be distributed to other users
+4. **Configure the extension**:
+   - Click the extension icon in your toolbar
+   - Paste your API key in the "OpenRouter API Key" field
+   - The key will be saved automatically
 
-## Setup
+## 📖 Usage
 
-### For Users
+### Screen Questions
+1. Click the extension icon
+2. Make sure "Screen Questions" mode is selected
+3. Type your question about what's on your screen
+4. Click "🤔 Ask AI"
+5. The extension automatically captures your screen and analyzes it
+6. Get an AI-powered answer based on your screen content
 
-1. **Install the extension** (see Installation section above)
-2. **Get OpenRouter API Key**: Visit [https://openrouter.ai/](https://openrouter.ai/) to get your API key
-3. **Configure Extension**: Click the extension icon and enter your API key
-4. **Start using**: The extension will save your API key securely
+### General AI Questions
+1. Click the extension icon
+2. Switch to "General AI" mode
+3. Type any question you want to ask
+4. Click "🤔 Ask AI"
+5. Get an AI response without needing screen content
 
-### For Developers/Distributors
+## ⚙️ Configuration
 
-1. **Distribute the extension** to users
-2. **Users provide their own API keys** - no need to manage API costs
-3. **Token limits still apply** per user for usage tracking
+Each mode comes with pre-optimized settings:
 
-## Usage
+| Mode | Model | Temperature | Max Tokens | Use Case |
+|------|-------|-------------|------------|----------|
+| **Screen** | Claude 3.5 Sonnet | 0.3 | 1,500 | Accurate screen analysis |
+| **General** | Claude 3.5 Sonnet | 0.7 | 2,000 | Creative AI assistance |
 
-### Two Modes Available
+## 🔧 Technical Details
 
-#### 📸 **Screen Questions Mode**
-- **Capture Screen**: Click the "📸 Capture Screen" button to take a screenshot
-- **Ask Question**: Type your question about what's visible on screen
-- **Get AI Response**: Click "🤔 Ask AI" to receive an intelligent answer about your screen content
+- **Manifest Version**: 3
+- **Permissions**: `activeTab`, `tabs`, `scripting`
+- **Storage**: Chrome sync storage for API keys
+- **API**: OpenRouter with Claude 3.5 Sonnet model
+- **Screenshot**: Chrome native `captureVisibleTab` API
 
-#### 🤔 **General AI Mode**
-- **Ask Anything**: Type any question you want answered
-- **Get AI Response**: Click "🤔 Ask AI" to receive AI assistance on any topic
+## 📝 Changelog
 
-### Mode Switching
-- Use the toggle buttons at the top of the extension popup
-- Switch between "📸 Screen Questions" and "🤔 General AI" modes
-- Each mode has its own interface and question field
+### Version 1.12 - Mode-Specific Configurations
+- **New Feature**: Separate system configurations for each mode
+- **Screen Mode**: Optimized for accuracy (temp: 0.3, tokens: 1,500)
+- **General Mode**: Balanced for creativity (temp: 0.7, tokens: 2,000)
+- **UI Enhancement**: Configuration display showing current settings
+- **Smart Defaults**: Each mode automatically uses appropriate settings
 
-### API Key Management
-- **Enter your API key** in the designated field
-- **Key is saved securely** in Chrome's storage
-- **No need to re-enter** on subsequent uses
-- **Your key stays private** and is only used for your requests
+### Version 1.11 - Clean Code & Optimization
+- **Code Cleanup**: Removed drag functionality and unused code
+- **Performance**: Streamlined background script operations
+- **Maintenance**: Cleaner, more maintainable codebase
 
-### Token Management
-- **View Usage**: See your current token usage in the progress bar
-- **Track Limits**: Visual indicators for usage levels (green → yellow → red)
-- **Reset Usage**: Click "Reset Usage" button to clear your token count
-- **Automatic Tracking**: Token usage is estimated and tracked automatically
+### Version 1.10 - Enhanced Animations
+- **New Animations**: Text reveal, character-by-character typing
+- **Smooth Transitions**: Enhanced mode switching animations
+- **Visual Polish**: Loading states and success/error animations
 
-### Example Questions
+### Version 1.9 - Automatic Screenshots & Modern UI
+- **Auto-Capture**: Screenshots taken automatically when asking screen questions
+- **Modern Design**: macOS-inspired interface with glassmorphism
+- **Enhanced UX**: Improved visual hierarchy and smooth animations
 
-#### Screen Questions:
-- "What is this webpage about?"
-- "What can I see in this image?"
-- "Summarize the main content on this screen"
-- "What are the key points in this document?"
-- "Describe what's happening in this application"
+### Version 1.8 - Simplified Interface
+- **Streamlined UI**: Focused on core AI functionality
+- **Removed Features**: Eliminated bookmark and token systems
+- **Clean Design**: Minimalist, efficient interface
 
-#### General AI Questions:
-- "How do I learn Python programming?"
-- "What's the weather like in New York?"
-- "Explain quantum computing in simple terms"
-- "Write a recipe for chocolate chip cookies"
-- "What are the benefits of meditation?"
+## 🤝 Contributing
 
-### Keyboard Shortcuts
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-- **Ctrl+Enter** in any question textarea: Submit your question
-- Works in both screen and general modes
+## 📄 License
 
-## Technical Details
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-### Architecture
+## 🆘 Support
 
-- **Manifest V3**: Uses the latest Chrome extension manifest version
-- **Service Worker**: Background script handles screen capture and API calls
-- **Content Script**: Runs on web pages to gather additional context
-- **Popup Interface**: User-friendly interface with dual-mode support
-- **Dual API Integration**: Handles both image-based and text-only AI requests
-- **Native Screen Capture**: Uses Chrome's desktopCapture API for reliable screen capture
-- **Configuration System**: Centralized settings in `config.js`
+If you encounter any issues:
+1. Check that your API key is correct
+2. Ensure you have an active internet connection
+3. Verify the extension has the necessary permissions
+4. Try refreshing the page you're analyzing
 
-### Permissions
+## 🔮 Future Plans
 
-- `activeTab`: Access to the currently active tab
-- `desktopCapture`: Permission to capture screen content using Chrome's native APIs
-- `storage`: Store API keys and token usage data securely
-- `scripting`: Execute scripts in tabs when needed
-- `tabs`: Query and interact with browser tabs for screen capture
+- [ ] Support for additional AI models
+- [ ] Custom temperature and token settings
+- [ ] Batch screenshot analysis
+- [ ] Voice input support
+- [ ] Export conversation history
 
-### API Integration
+---
 
-The extension integrates with OpenRouter API using:
-- **Model**: `anthropic/claude-3.5-sonnet` (supports both text and image analysis)
-- **Endpoint**: `https://openrouter.ai/api/v1/chat/completions`
-- **Authentication**: User-provided API keys for personalized access
-- **Dual Mode Support**: 
-  - Screen mode: Sends image + text to AI
-  - General mode: Sends text-only to AI
-- **Token Tracking**: Estimates and tracks token usage per user
-
-### Screen Capture Implementation
-
-The extension uses Chrome's native `desktopCapture` API for reliable screen capture:
-1. **Permission Request**: User selects which screen/window to capture
-2. **Stream Processing**: Captures video stream and converts to image
-3. **Local Processing**: Screenshot is processed locally before sending to AI
-4. **Privacy First**: Only the captured image is sent, no other data
-
-### Token Management System
-
-- **Automatic Tracking**: Estimates token usage based on question and response length
-- **Persistent Storage**: Token usage is saved across browser sessions
-- **Visual Feedback**: Progress bar shows usage with color-coded warnings
-- **Reset Functionality**: Users can reset their token usage if needed
-- **Limit Enforcement**: Prevents usage when token limit is reached
-
-## Troubleshooting
-
-### Common Issues
-
-1. **"No screenshot available"**
-   - Make sure you're in Screen Questions mode
-   - Capture the screen first before asking questions
-   - Check that screen capture permissions are granted
-
-2. **"Failed to capture screen"**
-   - Ensure you've granted screen capture permissions
-   - Try refreshing the extension
-   - Make sure you're on a supported page (not chrome:// URLs)
-   - Check that Chrome's desktop capture is working properly
-
-3. **"Please enter your OpenRouter API key first"**
-   - Enter your API key in the designated field
-   - Make sure the key is valid and has sufficient credits
-   - Check that you have credits in your OpenRouter account
-
-4. **"API Error"**
-   - Verify your OpenRouter API key is correct
-   - Check that you have credits in your OpenRouter account
-   - Ensure you're not hitting rate limits
-
-5. **"Token limit reached"**
-   - You've used your 100,000 token allocation
-   - Click "Reset Usage" button to clear your count
-   - Contact support if you need more tokens
-
-6. **Extension not loading**
-   - Verify all files are present in the extension directory
-   - Check Chrome's developer console for errors
-   - Try reloading the extension
-
-7. **General AI questions not working**
-   - Make sure you're in General AI mode
-   - Verify your API key is entered correctly
-   - Check that you have credits in your OpenRouter account
-
-8. **Screen capture permissions denied**
-   - Go to Chrome Settings > Privacy and security > Site Settings
-   - Check Screen Capture permissions
-   - Ensure the extension has permission to capture screen
-
-### Debug Mode
-
-To enable debug logging:
-1. Open Chrome DevTools
-2. Go to Console tab
-3. Look for messages from "AI Screen Assistant"
-
-## Security & Privacy
-
-- **Local Processing**: Screenshots are processed locally before sending to AI
-- **Secure Storage**: API keys and token usage are stored in Chrome's secure storage
-- **No Data Collection**: The extension doesn't collect or store user data
-- **API Security**: Only necessary data is sent to OpenRouter API
-- **Mode-Specific Data**: Screen mode sends images, general mode sends only text
-- **Native APIs**: Uses Chrome's built-in screen capture for security and reliability
-- **Token Isolation**: Each user's token usage is tracked separately
-- **Personal API Keys**: Users control their own API access and costs
-
-## Development
-
-### File Structure
-
-```
-├── manifest.json          # Extension configuration with permissions
-├── config.js              # Configuration file for settings and limits
-├── popup.html            # User interface with dual modes and API key input
-├── popup.js              # Popup logic, mode switching, and API key management
-├── background.js         # Service worker with dual AI support and token management
-├── content.js            # Content script
-├── icons/                # Extension icons
-└── README.md             # This file
-```
-
-### Customization
-
-- **Token Limits**: Modify limits in `config.js`
-- **UI Colors**: Modify CSS variables in `popup.html`
-- **AI Model**: Change the model in `config.js`
-- **Permissions**: Update `manifest.json` as needed
-- **API Endpoint**: Modify API calls in `background.js`
-- **Mode Behavior**: Adjust prompts and logic in `background.js`
-- **Screen Capture**: Modify capture logic in `background.js`
-
-### Building
-
-To build a distributable version:
-1. Ensure all files are present
-2. Use Chrome's "Pack extension" feature
-3. Test the `.crx` file in a clean Chrome profile
-
-## Support
-
-For issues or questions:
-1. Check the troubleshooting section above
-2. Review Chrome's extension documentation
-3. Check OpenRouter API documentation
-4. Open an issue in the repository
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Changelog
-
-### Version 1.3
-- Restored user API key input functionality
-- Users provide their own OpenRouter API keys
-- Fixed screen capture getDisplayMedia error
-- Enhanced error handling for screen capture
-- Improved user experience with personal API key management
-
-### Version 1.2
-- Added token usage tracking with 100,000 token limit
-- Implemented default API key system
-- Added configuration file for easy customization
-- Enhanced UI with token usage display and progress bar
-- Added token reset functionality
-- Improved error handling and user feedback
-
-### Version 1.1
-- Added General AI mode for non-screen questions
-- Implemented mode switching interface
-- Enhanced UI with dual-mode support
-- Updated background script for dual API handling
-- Fixed screen capture using Chrome's native desktopCapture API
-- Added proper permissions for reliable screen capture
-
-### Version 1.0
-- Initial release
-- Screen capture functionality
-- OpenRouter API integration
-- Modern UI design
-- Secure API key storage
+**Made with ❤️ for Chrome users who want AI-powered screen assistance**
