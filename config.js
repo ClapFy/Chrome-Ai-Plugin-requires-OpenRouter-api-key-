@@ -14,7 +14,7 @@ const CONFIG = {
       model: 'anthropic/claude-3.5-sonnet',
       maxTokens: 1500,
       maxInputTokens: 4000, // Maximum input tokens (image + text)
-      maxOutputTokens: 1500, // Maximum output tokens
+      maxOutputTokens: 100, // Maximum output tokens - much shorter responses (1-3 lines)
       temperature: 0.3, // Lower temperature for more focused, accurate screen analysis
       description: 'Optimized for analyzing screen content with high accuracy'
     },
@@ -33,6 +33,6 @@ const CONFIG = {
   DEFAULT_MODEL: 'anthropic/claude-3.5-sonnet',
   DEFAULT_MAX_TOKENS: 1500,
   DEFAULT_MAX_INPUT_TOKENS: 4000,
-  DEFAULT_MAX_OUTPUT_TOKENS: 1500,
-  DEFAULT_TEMPERATURE: 0.5
+  DEFAULT_MAX_OUTPUT_TOKENS: 500,
+  DEFAULT_TEMPERATURE: 0.7
 };

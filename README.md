@@ -75,10 +75,19 @@ A powerful Chrome extension that combines AI capabilities with screen analysis, 
 
 Each mode comes with pre-optimized settings:
 
-| Mode | Model | Temperature | Max Tokens | Use Case |
-|------|-------|-------------|------------|----------|
-| **Screen** | Claude 3.5 Sonnet | 0.3 | 1,500 | Accurate screen analysis |
-| **General** | Claude 3.5 Sonnet | 0.7 | 2,000 | Creative AI assistance |
+| Mode | Model | Temperature | Max Output | Max Input | Use Case |
+|------|-------|-------------|------------|-----------|----------|
+| **Screen** | Claude 3.5 Sonnet | 0.3 | 100 | 4,000 | Accurate screen analysis (1-3 line responses) |
+| **General** | Claude 3.5 Sonnet | 0.7 | 2,000 | 8,000 | Creative AI assistance |
+
+### Token Limits Explained
+- **Max Output**: Maximum tokens the AI can generate in response
+- **Max Input**: Maximum tokens for your question + any images (screen mode)
+- **System Controlled**: These limits are hardcoded in config.js for optimal performance
+- **Cost Control**: Lower input limits help manage API costs
+- **Quality Balance**: Higher output limits enable detailed responses
+
+**Note**: Token limits are automatically configured by the system and cannot be changed by users. This ensures consistent performance and cost management.
 
 ## 🔧 Technical Details
 
@@ -92,11 +101,12 @@ Each mode comes with pre-optimized settings:
 
 ### Version 1.13 - Input/Output Token Configuration
 - **New Feature**: Configurable max input and output token limits per mode
-- **Screen Mode**: 4,000 input tokens (image + text), 1,500 output tokens
+- **Screen Mode**: 4,000 input tokens (image + text), 100 output tokens (1-3 line responses)
 - **General Mode**: 8,000 input tokens (text only), 2,000 output tokens
 - **System Controlled**: Token limits are hardcoded in config.js, not user-editable
 - **Cost Control**: Better management of API usage and costs
 - **Enhanced UI**: Configuration display shows all token limits clearly
+- **Concise Screen Analysis**: Screen mode now provides brief, focused responses
 
 ### Version 1.12 - Mode-Specific Configurations
 - **New Feature**: Separate system configurations for each mode

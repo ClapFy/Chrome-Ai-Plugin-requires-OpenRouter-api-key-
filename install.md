@@ -49,7 +49,7 @@ Each mode automatically uses optimized settings:
 
 | Mode | Temperature | Max Output | Max Input | Use Case |
 |------|-------------|------------|-----------|----------|
-| **Screen** | 0.3 | 1,500 | 4,000 | Accurate analysis |
+| **Screen** | 0.3 | 100 | 4,000 | Accurate analysis (1-3 lines) |
 | **General** | 0.7 | 2,000 | 8,000 | Creative responses |
 
 **Token Limits Explained:**
@@ -57,6 +57,7 @@ Each mode automatically uses optimized settings:
 - **Max Input**: How much you can ask + images (screen mode)
 - **System Controlled**: Limits are hardcoded for optimal performance
 - **Cost Control**: Input limits help manage API costs
+- **Screen Mode**: Now provides concise, focused responses
 
 ## 🔧 Troubleshooting
 
